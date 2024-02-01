@@ -21,7 +21,7 @@ app.use("/ping", (req, res) => {
 });
 
 // routes
-app.use('api/post', postRoutes)
+app.use('/api/post', postRoutes)
 
 
 

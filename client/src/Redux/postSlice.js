@@ -64,5 +64,4 @@ const postsSlice = createSlice({
   },
 });
 
-export const { actions } = postsSlice;
 export default postsSlice.reducer;
