@@ -1,57 +1,21 @@
-import { Container, AppBar, Typography, Grow, Grid } from "@material-ui/core";
-import memories from "./images/memories.png";
-import Posts from "./components/Posts/Posts.jsx";
-import Form from "./components/Form/Form.jsx";
-import useStyles from "./styles.js";
-import { useDispatch } from "react-redux";
-import {
-  fetchPostsAsync,
-  createPostAsync,
-  updatePostAsync,
-  likePostAsync,
-  deletePostsAsync,
-} from "./Redux/postSlice.js";
-import { useEffect, useState } from "react";
+import { Container } from "@material-ui/core";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Navbar from "./components/Navbar/Navbar.jsx";
+import Home from "./Home/Home.jsx";
+import Auth from "./components/Auth/Auth.jsx";
 
 function App() {
-  const classes = useStyles();
-  const dispatch = useDispatch();
-
-  const [currentId, setCurrentId] = useState(null);
-
-  useEffect(() => {
-    dispatch(fetchPostsAsync());
-  }, [dispatch, currentId]);
-
   return (
-    <Container maxWidth="lg">
-      <AppBar className={classes.appBar} position="static" color="inherit">
-        <Typography className={classes.heading} variant="h2" align="center">
-          Memories
-        </Typography>
-        <img className={classes.image} src={memories} alt="" height="60" />
-      </AppBar>
-
-      <Grow in>
-        <Container>
-          <Grid
-            container
-            justifyContent="space-between"
-            alignItems="stretch"
-            spacing={3}
-            className={classes.mainContainer}
-          >
-            <Grid item xs={12} sm={7}>
-              <Posts setCurrentId={setCurrentId}/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Form currentId={currentId} setCurrentId={setCurrentId} />
-            </Grid>
-          </Grid>
-        </Container>
-      </Grow>
-    </Container>
+    <BrowserRouter>
+      <Container maxWidth="lg">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<Auth />} />
+        </Routes>
+      </Container>
+    </BrowserRouter>
   );
 }
 
