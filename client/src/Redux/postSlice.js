@@ -24,12 +24,15 @@ export const updatePostAsync = createAsyncThunk(
 );
 
 export const likePostAsync = createAsyncThunk("posts/like", async (id) => {
-  const { data } = await api.likePost();
+  const { data } = await api.likePost(id);
+  console.log(`Post with id: ${id} liked`);
+
   return data;
 });
 
 export const deletePostsAsync = createAsyncThunk("posts/delete", async (id) => {
-  const { data } = await api.deletePost();
+  const { data } = await api.deletePost(id);
+  console.log(`Post with id ${id} deleted Successfully`);
   return data;
 });
 

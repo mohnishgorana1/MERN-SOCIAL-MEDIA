@@ -13,9 +13,11 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import useStyles from "./styles.js";
+import { deletePostsAsync, likePostAsync } from "../../../Redux/postSlice.js";
 
 function Post({ post, setCurrentId }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   return (
     <Card className={classes.card}>
@@ -48,16 +50,28 @@ function Post({ post, setCurrentId }) {
         {post.title}
       </Typography>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="body" color="textSecondary" component={"p"} gutterBottom>
           {post.message}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => {
+            dispatch(likePostAsync(post._id));
+          }}
+        >
           <ThumbUpAltIcon fontSize="small" />
           {post.likeCount} Like{" "}
         </Button>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => {
+            dispatch(deletePostsAsync(post._id));
+          }}
+        >
           <DeleteIcon fontSize="small" />
           Delete
         </Button>
