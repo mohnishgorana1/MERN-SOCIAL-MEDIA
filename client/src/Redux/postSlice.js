@@ -18,7 +18,7 @@ export const createPostAsync = createAsyncThunk(
 export const updatePostAsync = createAsyncThunk(
   "posts/update",
   async ({ id, post }) => {
-    const { data } = await api.updatePost();
+    const { data } = await api.updatePost(id, post);
     return data;
   }
 );
@@ -35,7 +35,7 @@ export const deletePostsAsync = createAsyncThunk("posts/delete", async (id) => {
 
 const postsSlice = createSlice({
   name: "posts",
-  initialState: [], // array for storing posts in redux 
+  initialState: [], // array for storing posts in redux
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -46,7 +46,9 @@ const postsSlice = createSlice({
         state.push(action.payload);
       })
       .addCase(updatePostAsync.fulfilled, (state, action) => {
-        const index = state.findIndex((post) => post.id === action.payload);
+        const index = state.findIndex(
+          (post) => post._id === action.payload._id
+        );
         if (index !== -1) {
           state[index] = action.payload;
         }

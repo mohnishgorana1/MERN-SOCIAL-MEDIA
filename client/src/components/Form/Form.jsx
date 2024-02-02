@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useStyles from "./styles.js";
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import FileBase from "react-file-base64";
-import { useDispatch } from "react-redux";
-import { createPostAsync } from "../../Redux/postSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import { createPostAsync, updatePostAsync } from "../../Redux/postSlice.js";
 
-function Form() {
+function Form({ currentId, setCurrentId }) {
   const classes = useStyles();
-
+  const dispatch = useDispatch();
   const [postData, setPostData] = useState({
     creator: "",
     title: "",
@@ -16,16 +16,31 @@ function Form() {
     selectedFile: "",
   });
 
-  const dispatch = useDispatch();
+  const post = useSelector((state) =>
+    currentId ? state.posts.find((post) => post._id === currentId) : null
+  );
+
+  useEffect(() => {
+    if (post) {
+      setPostData(post);
+    }
+  }, [post]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("postData", postData)
+    console.log("postData", postData);
 
-    dispatch(createPostAsync(postData));
+    if (currentId) {
+      dispatch(updatePostAsync({ id: currentId, post: postData }));
+      console.log("UPDATE POST from submit ", currentId);
+    } else {
+      dispatch(createPostAsync(postData));
+    }
+    clear();
   };
 
   const clear = () => {
+    setCurrentId(null);
     setPostData({
       creator: "",
       title: "",
@@ -34,6 +49,7 @@ function Form() {
       selectedFile: "",
     });
   };
+
   return (
     <Paper className={classes.paper}>
       <form
@@ -42,7 +58,9 @@ function Form() {
         className={`${classes.form} ${classes.root}`}
         onSubmit={handleSubmit}
       >
-        <Typography variant="h6">Creating a Memory</Typography>
+        <Typography variant="h6">
+          {currentId ? `Editing` : `Creating`} a Memory
+        </Typography>
         <TextField
           name="creator"
           variant="outlined"

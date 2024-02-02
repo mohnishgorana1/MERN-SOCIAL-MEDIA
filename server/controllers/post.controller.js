@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
 import { Post } from "../models/post.model.js";
-
 export const getPosts = async (req, res) => {
   try {
     const post = await Post.find();
-    console.log(post);
-
     res.status(200).json(post);
   } catch (error) {
     res.status(404).json({ Message: error.message });
@@ -27,15 +24,17 @@ export const createPost = async (req, res) => {
 export const getPost = async (req, res) => {};
 
 export const updatePost = async (req, res) => {
-  const { id: _id } = req.params;
+  const { id } = req.params;
+  const { title, message, creator, selectedFile, tags } = req.body;
 
-  const post = req.body;
-  if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("No Post with that post id");
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send(`No post with id: ${id}`);
 
-  const updatedPost = await Post.findByIdAndUpdate(_id, post, { new: true });
+  const updatedPost = { creator, title, message, tags, selectedFile, _id: id };
 
-  res.json(updatePost);
+  await Post.findByIdAndUpdate(id, updatedPost, { new: true });
+
+  res.json(updatedPost);
 };
 
 export const deletePost = async (req, res) => {};
