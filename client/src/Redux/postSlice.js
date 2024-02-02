@@ -9,7 +9,8 @@ export const fetchPostsAsync = createAsyncThunk("posts/fetchAll", async () => {
 export const createPostAsync = createAsyncThunk(
   "posts/create",
   async (post) => {
-    const { data } = await api.createPost();
+    const { data } = await api.createPost(post);
+    console.log(data);
     return data;
   }
 );
@@ -34,7 +35,7 @@ export const deletePostsAsync = createAsyncThunk("posts/delete", async (id) => {
 
 const postsSlice = createSlice({
   name: "posts",
-  initialState: [],
+  initialState: [], // array for storing posts in redux 
   reducers: {},
   extraReducers: (builder) => {
     builder

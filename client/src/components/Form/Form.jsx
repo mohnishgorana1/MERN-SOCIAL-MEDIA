@@ -2,8 +2,12 @@ import { useState } from "react";
 import useStyles from "./styles.js";
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import FileBase from "react-file-base64";
+import { useDispatch } from "react-redux";
+import { createPostAsync } from "../../Redux/postSlice.js";
+
 function Form() {
   const classes = useStyles();
+
   const [postData, setPostData] = useState({
     creator: "",
     title: "",
@@ -11,7 +15,15 @@ function Form() {
     tags: "",
     selectedFile: "",
   });
-  const handleSubmit = () => {};
+
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("postData", postData)
+
+    dispatch(createPostAsync(postData));
+  };
 
   const clear = () => {
     setPostData({

@@ -1,6 +1,6 @@
 import { Container, AppBar, Typography, Grow, Grid } from "@material-ui/core";
 import memories from "./images/memories.png";
-import Post from "./components/Posts/Posts.jsx";
+import Posts from "./components/Posts/Posts.jsx";
 import Form from "./components/Form/Form.jsx";
 import useStyles from "./styles.js";
 import { useDispatch } from "react-redux";
@@ -40,7 +40,7 @@ function App() {
             spacing={3}
           >
             <Grid item xs={12} sm={7}>
-              <Post />
+              <Posts />
             </Grid>
             <Grid item xs={12} sm={4}>
               <Form />
