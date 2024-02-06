@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardActions,
@@ -18,6 +18,7 @@ import { deletePostsAsync, likePostAsync } from "../../../Redux/postSlice.js";
 function Post({ post, setCurrentId }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+
 
   return (
     <Card className={classes.card}>
@@ -50,7 +51,12 @@ function Post({ post, setCurrentId }) {
         {post.title}
       </Typography>
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component={"p"} gutterBottom>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          component={"p"}
+          gutterBottom
+        >
           {post.message}
         </Typography>
       </CardContent>

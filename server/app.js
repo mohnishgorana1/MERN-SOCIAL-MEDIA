@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import bodyParser from 'body-parser';
-import postRoutes from './routes/post.routes.js'
-
+import bodyParser from "body-parser";
+import postRoutes from "./routes/post.routes.js";
+import userRoutes from "./routes/user.routes.js";
 const app = express();
 
 // middlewares:  express.json | cors | cookieParser | morgan |
@@ -11,10 +11,9 @@ const app = express();
 // app.use(express.urlencoded({ extended: true }));
 // app.use(cookieParser());
 
-
-app.use(bodyParser.json({ limit: '30mb', extended: true }))
-app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
-app.use(cors())
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use(cors());
 
 // default route
 app.use("/ping", (req, res) => {
@@ -25,8 +24,7 @@ app.use("/ping", (req, res) => {
 });
 
 // routes
-app.use('/api/post', postRoutes)
-
-
+app.use("/api/user", userRoutes);
+app.use("/api/post", postRoutes);
 
 export default app;

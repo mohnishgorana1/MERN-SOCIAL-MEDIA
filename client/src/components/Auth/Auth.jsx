@@ -4,27 +4,73 @@ import {
   Container,
   Grid,
   Paper,
-  TextField,
   Typography,
 } from "@material-ui/core";
+
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined.js";
+// import { GoogleLogin } from "react-google-login";
 import useStyles from "./styles.js";
 import Input from "./Input.jsx";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+// import Icon from "./icon.jsx";
+import { registerAsync, loginAsync } from "../../Redux/authSlice.js";
 function Auth() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [isSignUp, setisSignUp] = useState(false);
+  const [isSignUp, setIsSignup] = useState(false);
+
+  /**
+ // const googleSuccess = async () => {
+  //   console.log("Google Sign in was successful");
+  // };
+  // const googleFailure = async () => {
+  //   console.log("Google Sign in was unsuccessful");
+  // };
+ */
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   const switchMode = () => {
-    setisSignUp(!isSignUp);
+    setIsSignup(!isSignUp);
   };
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("formData: ", formData);
+    if (isSignUp) {
+      dispatch(registerAsync(formData));
+      navigate("/");
+      return;
+    } else {
+      dispatch(loginAsync(formData));
+      navigate("/");
+      return;
+    }
+  };
+
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={3}>
@@ -77,6 +123,27 @@ function Auth() {
               />
             )}
           </Grid>
+
+          {/* <GoogleLogin
+            clientId="GOOGLE ID"
+            render={(renderProps) => (
+              <Button
+                className={classes.googleButton}
+                color="primary"
+                fullWidth
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                startIcon={<Icon />}
+                variant="contained"
+              >
+                Google Sign In
+              </Button>
+            )}
+            onSuccess={googleSuccess}
+            onFailure={googleFailure}
+            cookiePolicy="single_host_origin"
+          /> */}
+
           <Button
             type="submit"
             fullWidth

@@ -2,9 +2,18 @@ import { AppBar, Avatar, Button, Toolbar, Typography } from "@material-ui/core";
 import useStyles from "./styles.js";
 import memories from "../../images/memories.png";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { logout } from "../../Redux/authSlice.js";
 function Navbar() {
   const classes = useStyles();
-  const user = false;
+  const user = useSelector((state) => state.auth.user) || null;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
       <div className={classes.brandContainer}>
@@ -22,16 +31,17 @@ function Navbar() {
       <Toolbar className={classes.toolbar}>
         {user ? (
           <div className={classes.profile}>
-            <Avatar className={classes.purple} src={user.result.imageUrl}>
+            {/* <Avatar className={classes.purple} src={user.result.imageUrl}>
               {user.result.name.charAt(0)}
-            </Avatar>
+            </Avatar> */}
             <Typography className={classes.userName} variant="h6">
-              {user.result.name}
+              {user.name}
             </Typography>
             <Button
               variant="contained"
               className={classes.logout}
               color="secondary"
+              onClick={() => dispatch(logout())}
             >
               Logout
             </Button>
