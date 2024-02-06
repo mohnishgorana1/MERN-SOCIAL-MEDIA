@@ -4,6 +4,7 @@ const postSchema = new mongoose.Schema(
   {
     title: String,
     message: String,
+    name: String, 
     creator: String,
     tags: [String],
     selectedFile: String,
@@ -14,5 +15,6 @@ const postSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 
 export const Post = mongoose.model("Post", postSchema);

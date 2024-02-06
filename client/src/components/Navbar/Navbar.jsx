@@ -10,9 +10,9 @@ function Navbar() {
   const user = useSelector((state) => state.auth.user) || null;
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  // useEffect(() => {
+  //   console.log(user);
+  // }, [user]);
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">

@@ -17,8 +17,9 @@ export const createPostAsync = createAsyncThunk(
 
 export const updatePostAsync = createAsyncThunk(
   "posts/update",
-  async ({ id, post }) => {
+  async (id, post) => {
     const { data } = await api.updatePost(id, post);
+    console.log(data);
     return data;
   }
 );

@@ -9,7 +9,6 @@ function Form({ currentId, setCurrentId }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [postData, setPostData] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
@@ -20,35 +19,45 @@ function Form({ currentId, setCurrentId }) {
     currentId ? state.posts.find((post) => post._id === currentId) : null
   );
 
+  const user = useSelector((state) => state.auth.user) || null;
+
   useEffect(() => {
     if (post) {
       setPostData(post);
     }
   }, [post]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("postData", postData);
-
-    if (currentId) {
-      dispatch(updatePostAsync({ id: currentId, post: postData }));
-      console.log("UPDATE POST from submit ", currentId);
-    } else {
-      dispatch(createPostAsync(postData));
-    }
-    clear();
-  };
-
   const clear = () => {
     setCurrentId(null);
     setPostData({
-      creator: "",
       title: "",
       message: "",
       tags: "",
       selectedFile: "",
     });
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("postData", postData);
+
+    if (currentId) {
+      dispatch(updatePostAsync(currentId, { ...postData, name: user?.name }));
+    } else {
+      dispatch(createPostAsync({ ...postData, name: user?.name }));
+    }
+    clear();
+  };
+
+  if (!user) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please Sign In to create your own memories!
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
     <Paper className={classes.paper}>
@@ -61,16 +70,7 @@ function Form({ currentId, setCurrentId }) {
         <Typography variant="h6">
           {currentId ? `Editing` : `Creating`} a Memory
         </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postData.creator}
-          onChange={(e) =>
-            setPostData({ ...postData, creator: e.target.value })
-          }
-        />
+
         <TextField
           name="title"
           variant="outlined"
