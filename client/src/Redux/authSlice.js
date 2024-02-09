@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as authApi from "../api/authApi.js";
 
-
 const loadUserFromLocalStorage = () => {
   const storedUser = localStorage.getItem("user");
   return storedUser ? JSON.parse(storedUser) : null;
@@ -44,21 +43,21 @@ const authSlice = createSlice({
       console.log("Logging out");
       state.user = null;
       state.isAuthenticated = false;
+      state.token = null;
       localStorage.removeItem("user");
       localStorage.removeItem("token");
       console.log("Logged out");
-
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.user = action.payload?.result;
-        state.token = action.payload.token;
+        state.token = action.payload?.token;
         state.isAuthenticated = true;
 
-        localStorage.setItem("user", JSON.stringify(action.payload?.result));
-        localStorage.setItem("token", JSON.stringify(action.payload?.token));
+        localStorage.setItem("user", JSON.stringify(state.user));
+        localStorage.setItem("token", JSON.stringify(state.token));
       })
       .addCase(registerAsync.fulfilled, (state, action) => {
         state.user = action.payload?.result;

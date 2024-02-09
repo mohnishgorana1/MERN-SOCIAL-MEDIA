@@ -25,9 +25,8 @@ export const updatePostAsync = createAsyncThunk(
 );
 
 export const likePostAsync = createAsyncThunk("posts/like", async (id) => {
+  console.log("ID  for like of post", id);
   const { data } = await api.likePost(id);
-  console.log(`Post with id: ${id} liked`);
-
   return data;
 });
 
@@ -64,6 +63,7 @@ const postsSlice = createSlice({
         if (index !== -1) {
           state[index] = action.payload;
         }
+        console.log(`Post liked`, action.payload);
       })
       .addCase(deletePostsAsync.fulfilled, (state, action) => {
         return state.filter((post) => post._id !== action.payload);

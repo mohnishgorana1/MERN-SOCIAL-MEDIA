@@ -2,15 +2,17 @@ import axios from "axios";
 
 const url = "/api/post";
 
+// const token = localStorage.getItem("token");
 const token = JSON.parse(localStorage.getItem("token"));
-console.log("token", token);
+
 const config = {
   headers: {
+    "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   },
 };
 
-console.log("config::", config);
+console.log("token", token);
 
 export const fetchPosts = () => axios.get(url);
 
@@ -21,4 +23,5 @@ export const updatePost = (id, updatedPost) =>
 
 export const deletePost = (id) => axios.delete(`${url}/${id}`, config);
 
-export const likePost = (id) => axios.patch(`${url}/${id}/likePost`, config);
+export const likePost = (id) =>
+  axios.patch(`${url}/${id}/likePost`, {}, config);

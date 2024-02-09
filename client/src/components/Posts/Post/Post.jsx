@@ -8,17 +8,54 @@ import {
   Typography,
 } from "@material-ui/core/";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined.js";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import moment from "moment";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useStyles from "./styles.js";
-import { deletePostsAsync, likePostAsync } from "../../../Redux/postSlice.js";
+import {
+  deletePostsAsync,
+  fetchPostsAsync,
+  likePostAsync,
+} from "../../../Redux/postSlice.js";
 
 function Post({ post, setCurrentId }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user) || null;
 
+  const handleLikes = (id) => {
+    const res = dispatch(likePostAsync(id));
+    console.log("res", res);
+  };
+
+  const Likes = () => {
+    if (post.likes.length > 0) {
+      return post.likes.includes(user?._id) ? (
+        <>
+          <ThumbUpAltIcon fontSize="small" />
+          &nbsp;
+          {post.likes.length > 2
+            ? `You and ${post.likes.length - 1} others`
+            : `You Liked`}
+        </>
+      ) : (
+        <>
+          <ThumbUpAltIcon fontSize="small" />
+          &nbsp;
+          {post.likes.length > 1 ? `${post.likes.length} Likes` : "1 Like"}
+        </>
+      );
+    }
+
+    return (
+      <>
+        <ThumbUpAltOutlined fontSize="small" />
+        &nbsp;Like
+      </>
+    );
+  };
 
   return (
     <Card className={classes.card}>
@@ -64,12 +101,10 @@ function Post({ post, setCurrentId }) {
         <Button
           size="small"
           color="primary"
-          onClick={() => {
-            dispatch(likePostAsync(post._id));
-          }}
+          onClick={() => handleLikes(post._id)}
+          disabled={!user}
         >
-          <ThumbUpAltIcon fontSize="small" />
-          {post.likeCount} Like{" "}
+          <Likes />
         </Button>
         <Button
           size="small"
@@ -86,4 +121,4 @@ function Post({ post, setCurrentId }) {
   );
 }
 
-export default Post;
+export default Post

@@ -11,7 +11,6 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   const post = req.body;
-  console.log(req.userId);
   const newPost = new Post({ ...post, creator: req.userId });
 
   try {
@@ -35,7 +34,8 @@ export const getPost = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   const { id } = req.params;
-  const { title, message, creator, selectedFile, tags } = req.body;
+  // const { title, message, creator, selectedFile, tags } = req.body;
+  const post = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send(`No post with id: ${id}`);
@@ -58,7 +58,7 @@ export const deletePost = async (req, res) => {
 
 export const likePost = async (req, res) => {
   const { id } = req.params;
-
+  console.log("USER ID THAT IS LIKING POST:: ", req.userId);
   if (!req.userId) {
     return res.json({ message: "Not Authorized" });
   }
@@ -73,9 +73,12 @@ export const likePost = async (req, res) => {
   if (index === -1) {
     // like post
     post.likes.push(req.userId);
+    console.log("POST LIKED");
   } else {
     // dislike post
     post.likes = post.likes.filter((id) => id !== String(req.userId));
+    console.log("POST DISLIKED");
+
   }
   const updatedPost = await Post.findByIdAndUpdate(id, post, { new: true });
   res.json({ message: "Post Like Update Successfully" });
