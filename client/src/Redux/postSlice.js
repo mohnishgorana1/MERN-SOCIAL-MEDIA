@@ -43,6 +43,7 @@ const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchPostsAsync.fulfilled, (state, action) => {
+        console.log(action.payload);
         return action.payload;
       })
       .addCase(createPostAsync.fulfilled, (state, action) => {

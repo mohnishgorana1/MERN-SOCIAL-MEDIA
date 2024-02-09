@@ -25,9 +25,9 @@ function Post({ post, setCurrentId }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user) || null;
 
-  const handleLikes = (id) => {
-    const res = dispatch(likePostAsync(id));
-    console.log("res", res);
+  const handleLikes = async (id) => {
+    await dispatch(likePostAsync(id));
+    dispatch(fetchPostsAsync());
   };
 
   const Likes = () => {
@@ -70,15 +70,18 @@ function Post({ post, setCurrentId }) {
           {moment(post.createdAt).fromNow()}
         </Typography>
       </div>
-      <div className={classes.overlay2}>
-        <Button
-          style={{ color: "white" }}
-          size="small"
-          onClick={() => setCurrentId(post._id)}
-        >
-          <MoreHorizIcon fontSize="medium" />
-        </Button>
-      </div>
+      {user?._id === post?.creator && (
+        <div className={classes.overlay2}>
+          <Button
+            style={{ color: "white" }}
+            size="small"
+            onClick={() => setCurrentId(post._id)}
+          >
+            <MoreHorizIcon fontSize="medium" />
+          </Button>
+        </div>
+      )}
+
       <div className={classes.details}>
         <Typography variant="body2" color="textSecondary">
           {post.tags.map((tag) => `#${tag} `)}
@@ -106,19 +109,21 @@ function Post({ post, setCurrentId }) {
         >
           <Likes />
         </Button>
-        <Button
-          size="small"
-          color="primary"
-          onClick={() => {
-            dispatch(deletePostsAsync(post._id));
-          }}
-        >
-          <DeleteIcon fontSize="small" />
-          Delete
-        </Button>
+        {user?._id === post?.creator && (
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => {
+              dispatch(deletePostsAsync(post._id));
+            }}
+          >
+            <DeleteIcon fontSize="small" />
+            Delete
+          </Button>
+        )}
       </CardActions>
     </Card>
   );
 }
 
-export default Post
+export default Post;
