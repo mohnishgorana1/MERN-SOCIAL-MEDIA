@@ -1,5 +1,25 @@
 import mongoose from "mongoose";
 import { Post } from "../models/post.model.js";
+
+export const getPostsBySearch = async (req, res) => {
+  const { searchQuery, tags } = req.query;
+
+  // console.log("req.query", req.query);
+  // console.log("SearchQuery and tags", searchQuery, tags);
+  try {
+    const title = new RegExp(searchQuery, "i");
+    // console.log("title:  ", title);
+    const posts = await Post.find({
+      $or: [{ title }, { tags: { $in: tags.split(",") } }],
+    });
+    // console.log("SEARCHED POSTs", posts);
+    res.json({ data: posts });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+    console.log("ERROR", error.message);
+  }
+};
+
 export const getPosts = async (req, res) => {
   try {
     const post = await Post.find();
@@ -40,7 +60,7 @@ export const updatePost = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send(`No post with id: ${id}`);
 
-  const updatedPost = post
+  const updatedPost = post;
 
   await Post.findByIdAndUpdate(id, updatedPost, { new: true });
   console.log("postUpdated");
@@ -78,7 +98,6 @@ export const likePost = async (req, res) => {
     // dislike post
     post.likes = post.likes.filter((id) => id !== String(req.userId));
     console.log("POST DISLIKED");
-
   }
   const updatedPost = await Post.findByIdAndUpdate(id, post, { new: true });
   res.json({ message: "Post Like Update Successfully" });

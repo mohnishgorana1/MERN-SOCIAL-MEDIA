@@ -16,6 +16,11 @@ console.log("token", token);
 
 export const fetchPosts = () => axios.get(url);
 
+export const searchPost = (searchQuery) =>
+  axios.get(
+    `${url}/search?searchQuery=${searchQuery.search || "none"}&tags=${searchQuery.tags}`
+  );
+
 export const createPost = (newPost) => axios.post(url, newPost, config);
 
 export const updatePost = (id, updatedPost) =>
