@@ -26,19 +26,20 @@ function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [currentId, setCurrentId] = useState(null);
-  
+
   const query = useQuery();
   const page = query.get("page") || 1;
   const searchQuery = query.get("searchQuery");
 
-
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
-
 
   const searchPost = () => {
     if (search.trim() || tags) {
       dispatch(getPostBySearchAsync({ search, tags: tags.join(",") }));
+      navigate(
+        `/posts/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`
+      );
     } else {
       navigate("/");
     }

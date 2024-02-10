@@ -59,7 +59,7 @@ const postsSlice = createSlice({
       })
       .addCase(getPostBySearchAsync.fulfilled, (state, action) => {
         console.log(action.payload);
-        // return action.payload;
+        return action.payload;
       })
       .addCase(createPostAsync.fulfilled, (state, action) => {
         state.push(action.payload);
