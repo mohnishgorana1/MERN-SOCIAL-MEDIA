@@ -58,9 +58,7 @@ function Home() {
   const handleDelete = (tagToDelete) =>
     setTags(tags.filter((tag) => tag !== tagToDelete));
 
-  useEffect(() => {
-    dispatch(fetchPostsAsync());
-  }, [dispatch, currentId]);
+
 
   return (
     <Grow in>
@@ -111,7 +109,7 @@ function Home() {
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
             <Paper elevation={6}>
-              <Paginate />
+              <Paginate page={page} />
             </Paper>
           </Grid>
         </Grid>

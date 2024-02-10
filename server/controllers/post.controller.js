@@ -21,9 +21,22 @@ export const getPostsBySearch = async (req, res) => {
 };
 
 export const getPosts = async (req, res) => {
+  const { page } = req.query;
+
   try {
-    const post = await Post.find();
-    res.status(200).json(post);
+    const LIMIT = 3;
+    const startIndexOfEveryPage = (Number(page) - 1) * LIMIT;
+    const total = await Post.countDocuments({});
+    const posts = await Post.find()
+      .sort({ _id: -1 })
+      .limit(LIMIT)
+      .skip(startIndexOfEveryPage);
+
+    res.status(200).json({
+      data: posts,
+      currentPage: Number(page),
+      numberOfPages: Math.ceil(total / LIMIT),
+    });
   } catch (error) {
     res.status(404).json({ Message: error.message });
   }

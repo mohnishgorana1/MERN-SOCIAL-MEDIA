@@ -6,13 +6,13 @@ import { useEffect } from "react";
 
 function Posts({ setCurrentId }) {
   const classes = useStyles();
-  const posts = useSelector((state) => state.posts);
+  const posts = useSelector((state) => state.posts.posts);
 
   useEffect(() => {}, [posts]);
 
   return (
     <>
-      {!posts.length ? (
+      {!posts?.length ? (
         <CircularProgress />
       ) : (
         <Grid

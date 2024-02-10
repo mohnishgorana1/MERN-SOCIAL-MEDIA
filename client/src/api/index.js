@@ -14,7 +14,7 @@ const config = {
 
 console.log("token", token);
 
-export const fetchPosts = () => axios.get(url);
+export const fetchPosts = (page) => axios.get(`${url}?page=${page}`);
 
 export const searchPost = (searchQuery) =>
   axios.get(

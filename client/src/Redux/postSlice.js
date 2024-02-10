@@ -1,12 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api/index.js";
 
-export const fetchPostsAsync = createAsyncThunk("posts/fetchAll", async () => {
-  const { data } = await api.fetchPosts();
-  return data;
-});
+export const fetchPostsAsync = createAsyncThunk(
+  "posts/fetchAll",
+  async (page) => {
+    const { data } = await api.fetchPosts(page);
+    return data;
+  }
+);
 
-export const getPostBySearchAsync = createAsyncThunk("posts/searchPost", async (searchQuery) => {
+export const getPostBySearchAsync = createAsyncThunk(
+  "posts/searchPost",
+  async (searchQuery) => {
     console.log("searchQuery", searchQuery);
     const {
       data: { data },
@@ -55,11 +60,19 @@ const postsSlice = createSlice({
     builder
       .addCase(fetchPostsAsync.fulfilled, (state, action) => {
         console.log(action.payload);
-        return action.payload;
+        return {
+          ...state,
+          posts: action.payload.data,
+          currentPage: action.payload.currentPage,
+          numberOfPages: action.payload.numberOfPages,
+        };
       })
       .addCase(getPostBySearchAsync.fulfilled, (state, action) => {
         console.log(action.payload);
-        return action.payload;
+        return {
+          ...state,
+          posts: action.payload
+        }
       })
       .addCase(createPostAsync.fulfilled, (state, action) => {
         state.push(action.payload);
