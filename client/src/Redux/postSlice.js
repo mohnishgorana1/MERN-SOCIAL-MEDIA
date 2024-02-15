@@ -12,7 +12,7 @@ export const fetchPostsAsync = createAsyncThunk(
 export const getPostBySearchAsync = createAsyncThunk(
   "posts/searchPost",
   async (searchQuery) => {
-    console.log("searchQuery", searchQuery);
+    // console.log("searchQuery", searchQuery);
     const {
       data: { data },
     } = await api.searchPost(searchQuery);
@@ -26,8 +26,6 @@ export const getPostDetailsAsync = createAsyncThunk(
   "posts/postDetails",
   async (id) => {
     const {data} =  await api.getPostDetails(id);
-    console.log(data);
-
     return data
   }
 );
@@ -69,7 +67,6 @@ const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchPostsAsync.fulfilled, (state, action) => {
-        console.log(action.payload);
         return {
           ...state,
           posts: action.payload.data,
@@ -78,7 +75,6 @@ const postsSlice = createSlice({
         };
       })
       .addCase(getPostBySearchAsync.fulfilled, (state, action) => {
-        console.log(action.payload);
         return {
           ...state,
           posts: action.payload,

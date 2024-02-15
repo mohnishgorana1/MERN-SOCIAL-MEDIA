@@ -10,6 +10,8 @@ const config = {
     Authorization: `Bearer ${token}`,
   },
 };
+console.log(token);
+console.log(config);
 
 
 export const fetchPosts = (page) => axios.get(`${url}?page=${page}`);
