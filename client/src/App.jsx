@@ -8,7 +8,6 @@ import PostDetails from "./components/PostDetails/PostDetails.jsx";
 import { useSelector } from "react-redux";
 
 function App() {
-  const user = useSelector((state) => state.auth.user) || null;
   return (
     <BrowserRouter>
       <Container maxWidth="xl">

@@ -16,7 +16,7 @@ function Form({ currentId, setCurrentId }) {
   });
 
   const post = useSelector((state) =>
-    currentId ? state.posts.find((post) => post._id === currentId) : null
+    currentId ? state.posts.posts.find((post) => post._id === currentId) : null
   );
 
   const user = useSelector((state) => state.auth.user) || null;

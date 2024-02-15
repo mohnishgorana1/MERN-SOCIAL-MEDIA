@@ -22,6 +22,16 @@ export const getPostBySearchAsync = createAsyncThunk(
   }
 );
 
+export const getPostDetailsAsync = createAsyncThunk(
+  "posts/postDetails",
+  async (id) => {
+    const {data} =  await api.getPostDetails(id);
+    console.log(data);
+
+    return data
+  }
+);
+
 export const createPostAsync = createAsyncThunk(
   "posts/create",
   async (post) => {
@@ -71,8 +81,11 @@ const postsSlice = createSlice({
         console.log(action.payload);
         return {
           ...state,
-          posts: action.payload
-        }
+          posts: action.payload,
+        };
+      })
+      .addCase(getPostDetailsAsync.fulfilled, (state, action) => {
+        return action.payload
       })
       .addCase(createPostAsync.fulfilled, (state, action) => {
         state.push(action.payload);

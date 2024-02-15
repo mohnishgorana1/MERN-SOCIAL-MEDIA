@@ -59,7 +59,9 @@ export const getPost = async (req, res) => {
   try {
     const post = await Post.findById(id);
 
+    console.log("postDetails: ", post);
     res.status(200).json(post);
+
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
